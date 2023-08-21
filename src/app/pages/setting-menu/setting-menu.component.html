@@ -1,0 +1,32 @@
+<ul>
+  <ng-template #navigationList let-data>
+    <li *ngFor="let item of data;">
+      <!--Edit-->
+      <ng-container *ngIf="item?.isEdit; else noEdit">
+        <input
+          type="text"
+          [(ngModel)]="item.title"
+          (blur)="stopEdit(item)">
+        <i class='fa fa-check' (mousedown)="saveEdit()"></i>
+      </ng-container>
+
+      <!--No Edit-->
+      <ng-template #noEdit>
+        <div>
+          <span>{{item.title}}</span>
+          <i class='fa fa-plus' (click)="onCreate(item.key)"></i>
+          <i class='fa fa-trash' (click)="onDelete(item.key)"></i>
+          <i class='fa fa-edit' (click)="startEdit(item)"></i>
+        </div>
+      </ng-template>
+
+
+      <ul *ngIf="item?.children;">
+        <ng-container
+          *ngTemplateOutlet="navigationList; context:{ $implicit: item.children}">
+        </ng-container>
+      </ul>
+    </li>
+  </ng-template>
+  <ng-container *ngTemplateOutlet="navigationList; context:{ $implicit: navigations}"></ng-container>
+</ul>
