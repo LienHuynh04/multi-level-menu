@@ -1,13 +1,26 @@
 <ul>
   <ng-template #navigationList let-data>
-    <li *ngFor="let item of data;">
+    <li
+        *ngFor="let item of data;"
+        [ngClass]="{
+        'caret' : item.children
+        }"
+        (click)="dropdownMenu(item)"
+    >
       <!--Edit-->
       <ng-container *ngIf="item?.isEdit; else noEdit">
         <input
           type="text"
           [(ngModel)]="item.title"
+          #name="ngModel"
+          required
           (blur)="stopEdit(item)">
-        <i class='fa fa-check' (mousedown)="saveEdit()"></i>
+        <i class='fa fa-check' (mousedown)="saveEdit(item)"></i>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
+          <div *ngIf="name.errors?.['required']">
+            Title is required.
+          </div>
+        </div>
       </ng-container>
 
       <!--No Edit-->
@@ -21,7 +34,10 @@
       </ng-template>
 
 
-      <ul *ngIf="item?.children;">
+      <ul *ngIf="item?.children;"
+      [ngClass]="{'nested' : !item.isShow}"
+      >
+        {{item.isShow}}
         <ng-container
           *ngTemplateOutlet="navigationList; context:{ $implicit: item.children}">
         </ng-container>
@@ -29,4 +45,27 @@
     </li>
   </ng-template>
   <ng-container *ngTemplateOutlet="navigationList; context:{ $implicit: navigations}"></ng-container>
+</ul>
+<ul>
+  <li>p
+    <span class="caret">Beverages</span>
+    <ul class="nested">
+      <li>Water</li>
+      <li>Coffee</li>
+      <li><span class="caret">Tea</span>
+        <ul class="nested">
+          <li>Black Tea</li>
+          <li>White Tea</li>
+          <li><span class="caret">Green Tea</span>
+            <ul class="nested">
+              <li>Sencha</li>
+              <li>Gyokuro</li>
+              <li>Matcha</li>
+              <li>Pi Lo Chun</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>

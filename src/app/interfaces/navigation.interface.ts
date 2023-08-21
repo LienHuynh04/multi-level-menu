@@ -7,6 +7,7 @@ export interface NavbarItem {
   parent?: string;
   isEdit?: boolean;
   newValue?: boolean;
+  isShow?: boolean;
   children?: NavbarItem[];
 }
 

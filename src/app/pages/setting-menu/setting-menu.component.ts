@@ -28,7 +28,10 @@ export class SettingMenuComponent {
   /**
    * Handle save value
    */
-  saveEdit(): void {
+  saveEdit(item: NavbarItem): void {
+     if (!item.title) {
+      item.title = this.editValue;
+    }
     this.collapse();
     this.isEditBtn = true;
   }
@@ -65,15 +68,16 @@ export class SettingMenuComponent {
   }
 
   onDelete(key: string, array = this.navigations) {
-    console.log(key);
-    array.findIndex(arr => {
-
-    })
+    array.forEach((item, index) => {
+      this.editValue = 'Menu ' + key + '-' + ((item.children?.length || 0) + 1);
+      if (item.key == key) {
+        array.splice(index, 1)
+        return
+      } else if (item.children) {
+        this.onDelete(key, item.children);
+      }
+    });
   }
-
-  // findIndex(arr: any, _key: string) {
-  //   return arr.findIndex(item => item.key === key)
-  // }
 
 
   collapse(array = this.navigations) {
@@ -85,5 +89,14 @@ export class SettingMenuComponent {
         });
       }
     });
+  }
+
+  dropdownMenu(item: NavbarItem): void {
+    if(item.children) {
+        item.children.forEach(child => {
+          child.isShow =  !child.isShow
+        })
+      }
+    console.log(item);
   }
 }
