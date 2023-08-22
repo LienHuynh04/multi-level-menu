@@ -69,7 +69,6 @@ export class SettingMenuComponent {
             url: '/',
             children: [],
           });
-          console.log(item);
         } else if (item.children) {
           this.onCreate(key, item.children);
         }
