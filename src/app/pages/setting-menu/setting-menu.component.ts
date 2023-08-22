@@ -29,7 +29,7 @@ export class SettingMenuComponent {
    * Handle save value
    */
   saveEdit(item: NavbarItem): void {
-     if (!item.title) {
+    if (!item.title) {
       item.title = this.editValue;
     }
     this.collapse();
@@ -48,31 +48,43 @@ export class SettingMenuComponent {
   }
 
   onCreate(key: string, array = this.navigations) {
-    this.collapse();
-    array.forEach((item) => {
-      this.editValue = 'Menu ' + key + '-' + ((item.children?.length || 0) + 1);
-      if (item.key == key) {
-        if (!item.children?.length) {
-          item.children = [];
+    if (!key) {
+      array.push({
+        key: (array.length + 1).toString(),
+        title: 'Menu ' + (array.length + 1),
+        url: '/',
+        isEdit: true,
+        children: [],
+      });
+    } else {
+      array.forEach((item) => {
+        this.editValue = 'Menu ' + key + '-' + ((item.children?.length || 0) + 1);
+        if (item.key == key) {
+          if (!item.children?.length) {
+            item.children = [];
+          }
+          item.children?.push({
+            key: key + '-' + (item.children?.length + 1),
+            title: 'Menu ' + key + '-' + (item.children?.length + 1),
+            url: '/',
+            children: [],
+          });
+          console.log(item);
+        } else if (item.children) {
+          this.onCreate(key, item.children);
         }
-        item.children?.push({
-          key: key + '-' + (item.children?.length + 1),
-          title: 'Menu ' + key + '-' + (item.children?.length + 1),
-          url: '/',
-          isEdit: true,
-        });
-      } else if (item.children) {
-        this.onCreate(key, item.children);
-      }
-    });
+      });
+    }
+    this.toggle(key, true)
+    this.collapse();
   }
 
   onDelete(key: string, array = this.navigations) {
     array.forEach((item, index) => {
       this.editValue = 'Menu ' + key + '-' + ((item.children?.length || 0) + 1);
       if (item.key == key) {
-        array.splice(index, 1)
-        return
+        array.splice(index, 1);
+        return;
       } else if (item.children) {
         this.onDelete(key, item.children);
       }
@@ -91,12 +103,13 @@ export class SettingMenuComponent {
     });
   }
 
-  dropdownMenu(item: NavbarItem): void {
-    if(item.children) {
-        item.children.forEach(child => {
-          child.isShow =  !child.isShow
-        })
+  toggle(key: string, active: boolean, array = this.navigations): void {
+    array.forEach(nav => {
+      if (nav.key === key) {
+        nav.active = active;
+      } else if (nav.children?.length) {
+        this.toggle(key, active, nav.children);
       }
-    console.log(item);
+    });
   }
 }

@@ -1,42 +1,107 @@
-.alert {
-  color: #FF0000FF;
-}
-/* Remove default bullets */
-ul, #myUL {
-  list-style-type: none;
-}
+//
+//.nav-item {
+//  width: fit-content;
+//}
+//
+//.chevron::before {
+//  content: "";
+//  border-style: solid;
+//  border-width: 0.15em 0.15em 0 0;
+//  display: inline-block;
+//  height: 0.45em;
+//  left: 0.15em;
+//  position: relative;
+//  top: .6em;
+//  transform: rotate(-45deg);
+//  vertical-align: top;
+//  width: 0.45em;
+//  margin-right: 10px;
+//  cursor: pointer;
+//}
+//
+//.chevron.right:before {
+//  left: 0;
+//  transform: rotate(45deg);
+//}
+//
+//.cursor-pointer {
+//  cursor: pointer;
+//}
+//
+//.chevron.bottom:before {
+//  transform: rotate(135deg);
+//}
+//
+//.no-chevron {
+//  opacity: 0;
+//}
+//
+//.show {
+//  display: block;
+//}
+//
+//.sub-navbar {
+//  display: none;
+//
+//}
+//
+//.bottom {
+//  display: none;
+//}
+//.active {
+//  .right {
+//    display: none;
+//  }
+//  .bottom {
+//    display: inline-block;
+//  }
+//  .sub-navbar {
+//    display: inline-block;
+//  }
+//}
+.navbar {
+  i {
+    cursor: pointer;
+  }
 
-/* Remove margins and padding from the parent ul */
-#myUL {
-  margin: 0;
-  padding: 0;
-}
+  .nav-link {
+    width: fit-content;
+  }
 
-/* Style the caret/arrow */
-.caret {
-  cursor: pointer;
-  user-select: none; /* Prevent text selection */
-}
+  .sub-navbar {
+    display: none;
+    &.active {
+      display: block;
+    }
+  }
+  .chevron {
+    cursor: pointer;
+    &:before {
+      border-style: solid;
+      border-width: 0.15em 0.15em 0 0;
+      content: '';
+      display: inline-block;
+      height: 0.45em;
+      left: 0.15em;
+      position: relative;
+      top: 0.6em;
+      transform: rotate(-45deg);
+      vertical-align: top;
+      width: 0.45em;
+      margin-right: 10px;
+    }
 
-/* Create the caret/arrow with a unicode, and style it */
-.caret::before {
-  content: "\25B6";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
+    &.right {
+      &:before {
+        left: 0;
+        transform: rotate(45deg);
+      }
+    }
 
-/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-.caret-down::before {
-  transform: rotate(90deg);
-}
-
-/* Hide the nested list */
-.nested {
-  display: none;
-}
-
-/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
-.active {
-  display: block;
+    &.bottom {
+      &:before {
+        transform: rotate(135deg);
+      }
+    }
+  }
 }

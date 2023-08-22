@@ -2,6 +2,13 @@ import { NavbarItem } from '../interfaces';
 
 export const navigations: NavbarItem[] = [
   {
+    key: '2',
+    title: 'Menu 2',
+    url: '/',
+    isEdit: false,
+    children: [],
+  },
+  {
     key: '1',
     title: 'Menu 1',
     url: '/',
@@ -20,6 +27,7 @@ export const navigations: NavbarItem[] = [
             url: '/',
             parent: '1-1',
             isEdit: false,
+            children: [],
           },
           {
             key: '1-1-2',
@@ -27,15 +35,10 @@ export const navigations: NavbarItem[] = [
             url: '/',
             parent: '1-1',
             isEdit: false,
+            children: [],
           },
         ]
       }
     ]
-  },
-  {
-    key: '2',
-    title: 'Menu 2',
-    url: '/',
-    isEdit: false,
   },
 ];

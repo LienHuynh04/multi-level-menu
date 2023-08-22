@@ -1,71 +1,54 @@
-<ul>
-  <ng-template #navigationList let-data>
-    <li
-        *ngFor="let item of data;"
-        [ngClass]="{
-        'caret' : item.children
+<button (click)="onCreate('')">Add</button>
+
+<ul class="navbar">
+  <ng-template #navigationList let-menus>
+    <li *ngFor="let menu of menus;">
+      <div class="nav-link">
+        <span class="chevron"
+              (click)="toggle(menu.key, !menu.active)"
+              [ngClass]="{
+          'right' : !menu.active,
+          'bottom' : menu.active,
+          'hidden': !menu?.children?.length
         }"
-        (click)="dropdownMenu(item)"
-    >
-      <!--Edit-->
-      <ng-container *ngIf="item?.isEdit; else noEdit">
-        <input
-          type="text"
-          [(ngModel)]="item.title"
-          #name="ngModel"
-          required
-          (blur)="stopEdit(item)">
-        <i class='fa fa-check' (mousedown)="saveEdit(item)"></i>
-        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
-          <div *ngIf="name.errors?.['required']">
-            Title is required.
+        ></span>
+
+        <!--Edit-->
+        <ng-container *ngIf="menu?.isEdit; else noEdit">
+          <input
+            type="text"
+            class="mr-10"
+            [(ngModel)]="menu.title"
+            #name="ngModel"
+            required
+            (blur)="stopEdit(menu)">
+          <i class="fa fa-check" (mousedown)="saveEdit(menu)"></i>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
+            <div *ngIf="name.errors?.['required']">
+              Title is required.
+            </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
 
-      <!--No Edit-->
-      <ng-template #noEdit>
-        <div>
-          <span>{{item.title}}</span>
-          <i class='fa fa-plus' (click)="onCreate(item.key)"></i>
-          <i class='fa fa-trash' (click)="onDelete(item.key)"></i>
-          <i class='fa fa-edit' (click)="startEdit(item)"></i>
-        </div>
-      </ng-template>
+        <ng-template #noEdit>
+          <span class="nav-link-title mr-10">{{menu.title}}</span>
+          <i class="fa fa-plus mr-10" (click)="onCreate(menu.key)"></i>
+          <i class="fa fa-trash mr-10" (click)="onDelete(menu.key)"></i>
+          <i class="fa fa-edit mr-10" (click)="startEdit(menu)"></i>
+        </ng-template>
+
+      </div>
 
 
-      <ul *ngIf="item?.children;"
-      [ngClass]="{'nested' : !item.isShow}"
+      <ul *ngIf="menu?.children?.length;"
+          class="sub-navbar"
+          [ngClass]="{'active': menu.active}"
       >
-        {{item.isShow}}
         <ng-container
-          *ngTemplateOutlet="navigationList; context:{ $implicit: item.children}">
+          *ngTemplateOutlet="navigationList; context:{ $implicit: menu.children}">
         </ng-container>
       </ul>
     </li>
   </ng-template>
   <ng-container *ngTemplateOutlet="navigationList; context:{ $implicit: navigations}"></ng-container>
-</ul>
-<ul>
-  <li>p
-    <span class="caret">Beverages</span>
-    <ul class="nested">
-      <li>Water</li>
-      <li>Coffee</li>
-      <li><span class="caret">Tea</span>
-        <ul class="nested">
-          <li>Black Tea</li>
-          <li>White Tea</li>
-          <li><span class="caret">Green Tea</span>
-            <ul class="nested">
-              <li>Sencha</li>
-              <li>Gyokuro</li>
-              <li>Matcha</li>
-              <li>Pi Lo Chun</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
 </ul>
